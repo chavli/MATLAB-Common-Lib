@@ -66,5 +66,3 @@ function [ weights_v ] = online_glr( train_m, trials_n, step_f, test_m)
         add_to_progress_graph(pgraph, trial / 50, traine, teste);
     end
 end
-
-
