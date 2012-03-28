@@ -1,7 +1,7 @@
 %
-%   confusion_matrix
+%   binary_confusion_matrix
 %
-%   assumption: vector arguments are binary vectors
+%   assumption: vector arguments are binary vectors {0, 1}
 %
 %   creates a confusion matrix given the actual class data and predicted
 %   class data
@@ -30,29 +30,13 @@
 %       stats_m - a statistics matrix describing confuse_m
 %
 
-function [ confuse_m, stats_m ] = confusion_matrix( actual_v, predict_v )
-    confuse_m = zeros(2);
-    size_v = size(predict_v);
+function [ confuse_m, stats_m ] = binary_confusion_matrix( actual_v, predict_v )
+    %convert 0-1 to 1-2
+    actual_v = actual_v + 1;
+    predict_v = predict_v + 1;
     
-    %go through each predicted value
-    for sample=1:size_v(1)
-        %true positive
-        if actual_v(sample) == 1 && predict_v(sample) == 1
-            confuse_m(1, 1) = confuse_m(1, 1) + 1;
-            
-        %false positive
-        elseif actual_v(sample) == 0 && predict_v(sample) == 1
-            confuse_m(1, 2) = confuse_m(1, 2) + 1;
-
-        %false negative
-        elseif actual_v(sample) == 1 && predict_v(sample) == 0
-            confuse_m(2, 1) = confuse_m(2, 1) + 1;
-
-        %true negative
-        elseif actual_v(sample) == 0 && predict_v(sample) == 0
-            confuse_m(2, 2) = confuse_m(2, 2) + 1;
-        end
-    end
+    confuse_m = multi_confusion_matrix(actual_v, predict_v, 2);
+    stats_m = zeros(2, 2);
     
     %calculate sens, spec, ppv, npv respectively
     stats_m(1, 1) = confuse_m(1, 1) / ( confuse_m(1, 1) + confuse_m(2, 1));
