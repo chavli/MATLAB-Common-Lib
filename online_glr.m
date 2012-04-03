@@ -18,7 +18,7 @@ function [ weights_v ] = online_glr( train_m, trials_n, step_f, test_m)
     attrs_n = size_v(2) - 1;  %exclude classification column (assumed to be last)
     samples_n = size_v(1);
     
-    %initialize weights, plus one more for the bias
+    %initialize weights
     weights_v = ones(1,attrs_n);
     
     %check step flag
@@ -41,11 +41,11 @@ function [ weights_v ] = online_glr( train_m, trials_n, step_f, test_m)
         
         %update graph if step is enabled
         if step_f == 1 && mod(trial, 50) == 0
-            y_predict =  binary_glr_predict(train_m, weights_v);
+            y_predict =  binary_logistic_predict(train_m, weights_v);
             y_actual = train_m(:, size_v(2));
             traine = mean_square_error(y_actual, y_predict);
 
-            y_predict =  binary_glr_predict(test_m, weights_v);
+            y_predict =  binary_logistic_predict(test_m, weights_v);
             y_actual = test_m(:, size_v(2));
             teste = mean_square_error(y_actual, y_predict);
             
@@ -55,11 +55,11 @@ function [ weights_v ] = online_glr( train_m, trials_n, step_f, test_m)
     
     %add the last step
     if step_f == 1
-        y_predict =  binary_glr_predict(train_m, weights_v);
+        y_predict =  binary_logistic_predict(train_m, weights_v);
         y_actual = train_m(:, size_v(2));
         traine = mean_square_error(y_actual, y_predict);
 
-        y_predict =  binary_glr_predict(test_m, weights_v);
+        y_predict =  binary_logistic_predict(test_m, weights_v);
         y_actual = test_m(:, size_v(2));
         teste = mean_square_error(y_actual, y_predict);
 

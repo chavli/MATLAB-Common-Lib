@@ -34,9 +34,9 @@ function [ class_v, posterior_v ] = binary_logistic_predict( data_m, weights_v )
     
     
     for sample=1:samples_n
-        sample_v = data_m(sample,1:attrs_n);
+        sample_v = data_m(sample,2:attrs_n);
         %discriminant functions
-        posterior_v(sample) = sigmoid((sample_v * weights_v(2:attrs_n+1)) + weight_0);
+        posterior_v(sample) = sigmoid((sample_v * weights_v(2:attrs_n)) + weight_0);
         
         if posterior_v(sample) >= .5
             class_v(sample) = 1;
