@@ -28,15 +28,14 @@ function [ weights_v ] = online_glr( train_m, trials_n, step_f, test_m)
     
     %go through all trials
     for trial=0:trials_n - 1
-        %alpha = 2 / (trial + 1);
-        %alpha = 1 / sqrt(trial + 1);
-        alpha = .01 / (log(trial + 1) + exp(1));
+        alpha = 1 / sqrt(trial + 1);
+        %alpha = .01 / (log(trial + 1) + exp(1));
         sample = mod(trial, samples_n) + 1; %pick a sample
         
         %online weight update
         sample_v = train_m(sample, :);
         weight_0 = weights_v(1);
-        guess = sigmoid((weights_v(2:attrs_n) * sample_v(2:attrs_n)') + weight_0);        
+        guess = sigmoid((weights_v(2:attrs_n) * sample_v(2:attrs_n)') + weight_0);
         weights_v = weights_v + alpha * (sample_v(attrs_n + 1) - guess) * (sample_v(1:attrs_n)); 
         
         %update graph if step is enabled
