@@ -12,7 +12,7 @@
 %       norm_v - a normalized col vector representing attr_v
 %
 
-function [ norm_v ] = normalize( attr_v )
+function [ norm_v ] = standardize( attr_v )
     u = mean(attr_v);
     a = std(attr_v);
     
