@@ -7,8 +7,10 @@ function [ fig ] = graph_xcorr( signal1, signal2, lag, opt_title)
     fig = figure;
     plot(signal1/sum(signal1), 'r');
     hold on
-    if(lag ~= 0)
+    if(lag > 0)
         shift = (abs(lag) + 1) * abs(lag)/lag;
+    elseif(lag < 0)
+        shift = (abs(lag) + 1) * abs(lag)/-lag;
     else
         shift = 1;
     end
