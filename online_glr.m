@@ -9,14 +9,13 @@
 %
 %
 
-function [ weights_v ] = online_glr( train_m, trials_n, step_f, test_m)
+function [ weights_v ] = online_glr( data_m, class_v, trials_n, step_f, test_m)
     %add bias value
-    train_m = horzcat(ones(size(train_m, 1), 1), train_m);
+    data_m = horzcat(ones(size(data_m, 1), 1), data_m);
     test_m = horzcat(ones(size(test_m, 1), 1), test_m);
     
-    size_v = size(train_m);
-    attrs_n = size_v(2) - 1;  %exclude classification column (assumed to be last)
-    samples_n = size_v(1);
+    attrs_n = size(data_m, 2);
+    samples_n = size(data_m, 1);
     
     %initialize weights
     weights_v = ones(1,attrs_n);
@@ -33,15 +32,15 @@ function [ weights_v ] = online_glr( train_m, trials_n, step_f, test_m)
         sample = mod(trial, samples_n) + 1; %pick a sample
         
         %online weight update
-        sample_v = train_m(sample, :);
+        sample_v = data_m(sample, :);
         weight_0 = weights_v(1);
         guess = sigmoid((weights_v(2:attrs_n) * sample_v(2:attrs_n)') + weight_0);
-        weights_v = weights_v + alpha * (sample_v(attrs_n + 1) - guess) * (sample_v(1:attrs_n)); 
+        weights_v = weights_v + alpha * (class_v(sample) - guess) * (sample_v(1:attrs_n)); 
         
         %update graph if step is enabled
         if step_f == 1 && mod(trial, 50) == 0
-            y_predict =  binary_logistic_predict(train_m, weights_v);
-            y_actual = train_m(:, size_v(2));
+            y_predict =  binary_logistic_predict(data_m, weights_v);
+            y_actual = data_m(:, size_v(2));
             traine = mean_square_error(y_actual, y_predict);
 
             y_predict =  binary_logistic_predict(test_m, weights_v);
@@ -54,8 +53,8 @@ function [ weights_v ] = online_glr( train_m, trials_n, step_f, test_m)
     
     %add the last step
     if step_f == 1
-        y_predict =  binary_logistic_predict(train_m, weights_v);
-        y_actual = train_m(:, size_v(2));
+        y_predict =  binary_logistic_predict(data_m, weights_v);
+        y_actual = data_m(:, size_v(2));
         traine = mean_square_error(y_actual, y_predict);
 
         y_predict =  binary_logistic_predict(test_m, weights_v);
