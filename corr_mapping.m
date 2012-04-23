@@ -25,7 +25,7 @@ function [ params_v ] = corr_mapping( source_v, target_v )
     shift = lag(max_corr);
     
     %shift the means
-    disp(shift);
+    %disp(shift);
     if shift <= 0
         source_means = source_means(1: length(source_means) + shift);
         target_means = target_means(1-shift:(length(target_means)));
