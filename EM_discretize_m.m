@@ -22,7 +22,13 @@ function [ discretized_m, xcorr_v, unbin_v ] = discretize_m( data_m, cols, col_v
             %are
             [corr, lag] = xcorr(data_m(:, i), discretized_m(:, i), 'coeff');
             
-            lag = lag(find(corr == max(corr)));
+            %{
+            figure
+            plot(standardize(data_m(1:100, i)), 'r');
+            hold on
+            plot(standardize(discretized_m(1:100, i)), '--b');
+            %}
+            
             %disp(sprintf('discretized column %d: %f %d', i, max(corr), lag));
             xcorr_v(find(cols == i)) = max(corr);
             unbin_v(find(cols == i)) = mean;

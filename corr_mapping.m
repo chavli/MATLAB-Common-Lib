@@ -42,7 +42,6 @@ function [ params_v ] = corr_mapping( source_v, target_v )
     xlabel('source_v');    
     ylabel('target_v');
     %}
-    
 
 end
 
