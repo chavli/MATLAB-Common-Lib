@@ -16,7 +16,7 @@ function [ weights_v ] = online_glr( data_m, class_v, trials_n, step_f, test_m)
     
     attrs_n = size(data_m, 2);
     samples_n = size(data_m, 1);
-    
+
     %initialize weights
     weights_v = ones(1,attrs_n);
     
@@ -28,15 +28,13 @@ function [ weights_v ] = online_glr( data_m, class_v, trials_n, step_f, test_m)
     %go through all trials
     for trial=0:trials_n - 1
         alpha = 1 / sqrt(trial + 1);
-        %alpha = .01 / (log(trial + 1) + exp(1));
         sample = mod(trial, samples_n) + 1; %pick a sample
-        
+
         %online weight update
         sample_v = data_m(sample, :);
-        weight_0 = weights_v(1);
-        guess = sigmoid((weights_v(2:attrs_n) * sample_v(2:attrs_n)') + weight_0);
-        weights_v = weights_v + alpha * (class_v(sample) - guess) * (sample_v(1:attrs_n)); 
-        
+        guess = sigmoid((weights_v(1:attrs_n) * sample_v(1:attrs_n)'));
+        weights_v = weights_v + alpha * (class_v(sample) - guess) * (sample_v(1:attrs_n));
+       
         %update graph if step is enabled
         if step_f == 1 && mod(trial, 50) == 0
             y_predict =  binary_logistic_predict(data_m, weights_v);

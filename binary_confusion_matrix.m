@@ -6,9 +6,9 @@
 %   creates a confusion matrix given the actual class data and predicted
 %   class data
 %
-%       1   0
-%   1   TP  FP  
-%   0   FN  TN
+%       0   1
+%   0   TN  FN
+%   1   FP  TP
 %
 %   additionally, a second matrix is returned containing statistics about
 %   the confusion matrix

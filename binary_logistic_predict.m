@@ -20,8 +20,6 @@ function [ predict_v, posterior_v ] = binary_logistic_predict( data_m, weights_v
     samples_n = size(data_m, 1);
     attrs_n = size(data_m, 2);
     
-    weight_0 = weights_v(1);
-    
     %make sure weights_v is a column vector
     if ~iscolumn(weights_v)
         weights_v = weights_v';
@@ -33,9 +31,9 @@ function [ predict_v, posterior_v ] = binary_logistic_predict( data_m, weights_v
     
     
     for sample=1:samples_n
-        sample_v = data_m(sample,:);
+        sample_v = horzcat(1, data_m(sample,1:attrs_n-1));
         %discriminant functions
-        posterior_v(sample) = sigmoid((sample_v * weights_v(2:attrs_n+1)) + weight_0);
+        posterior_v(sample) = sigmoid((sample_v * weights_v));
         
         if posterior_v(sample) >= .5
             predict_v(sample) = 1;
