@@ -14,16 +14,15 @@
 
 function [ norm_v ] = standardize( attr_v )
     u = mean(attr_v);
-    a = std(attr_v);
+    a = max(attr_v);
     
     len = length(attr_v);
     
     %initialize norm vector
     norm_v = zeros(1, len);
     
-    for i = 1:len
-        norm_v(i) = (attr_v(i) - u) / a;
-    end
+    if a > 0
+      norm_v = (attr_v - u) ./ a;
     
     %flip to col
     norm_v = norm_v';

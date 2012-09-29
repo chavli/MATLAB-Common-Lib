@@ -16,6 +16,16 @@ function [ normalized_m ] = standardize_m( data_m, norm_class_f )
     size_v = size(data_m);
     attrs_n = size_v(2) - 1;
     
+    a = max(data_m);
+    u_m = center(data_m);
+    
+    normalized_m = u_m ./ a;
+    
+    if norm_class_f == 0
+      normalized_m(:, end) = data_m(:, end);
+    end
+    
+    %{
     normalized_m = zeros(size_v(1), size_v(2));
     
     for attr=1:attrs_n
@@ -28,5 +38,6 @@ function [ normalized_m ] = standardize_m( data_m, norm_class_f )
     else
         normalized_m(:, size_v(2)) = data_m(:, size_v(2));
     end
+    %}
 end
 
